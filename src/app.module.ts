@@ -5,6 +5,7 @@ import * as Joi from 'joi';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { DatabaseModule } from './database/database.module';
+import { ShodanModule } from './shodan/shodan.module';
 
 import config from './config';
 
@@ -24,6 +25,7 @@ import config from './config';
       }),
     }),
     DatabaseModule,
+    ShodanModule,
   ],
   controllers: [AppController],
   providers: [AppService],
