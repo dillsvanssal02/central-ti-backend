@@ -10,5 +10,12 @@ export default registerAs('config', () => {
       host: process.env.MONGO_HOST,
       connection: process.env.MONGO_CONNECTION,
     },
+    mail: {
+      host: process.env.MAIL_HOST,
+      port: process.env.MAIL_PORT,
+      user: process.env.MAIL_USER,
+      pass: process.env.MAIL_PASS,
+      secure: process.env.MAIL_SECURE,
+    },
   };
 });
