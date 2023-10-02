@@ -6,6 +6,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { DatabaseModule } from './database/database.module';
 import { ShodanModule } from './shodan/shodan.module';
+import { EmailModule } from './email/email.module';
 
 import config from './config';
 
@@ -26,6 +27,7 @@ import config from './config';
     }),
     DatabaseModule,
     ShodanModule,
+    EmailModule,
   ],
   controllers: [AppController],
   providers: [AppService],
