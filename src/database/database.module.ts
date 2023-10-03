@@ -11,8 +11,14 @@ import config from '../config';
       useFactory: async (configService: ConfigType<typeof config>) => {
         const { connection, user, pass, host, port, dbName } =
           configService.mongo;
+
+        const uri =
+          connection === 'mongodb+srv'
+            ? `${connection}://${host}/`
+            : `${connection}://${host}:${port}/`;
+
         return {
-          uri: `${connection}://${host}:${port}/`,
+          uri,
           user,
           pass,
           dbName,

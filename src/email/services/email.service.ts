@@ -1,5 +1,6 @@
 import { Injectable, Inject, ConflictException } from '@nestjs/common';
 import * as nodemailer from 'nodemailer';
+import puppeteer from 'puppeteer';
 
 import { SendEmailDto } from '../dtos/email.dto';
 
@@ -28,7 +29,25 @@ export class EmailService {
       };
 
       if (email.isHTML) {
-        mailStructure.html = email.body;
+        const browser = await puppeteer.launch({ headless: 'new' });
+        const page = await browser.newPage();
+        await page.goto(email.body, { waitUntil: 'domcontentloaded' });
+
+        await new Promise((resolve) => setTimeout(resolve, 15000));
+
+        const currentHtml = await page.content();
+        await page.setViewport({ width: 1080, height: 1024 });
+
+        const modifiedHtml = currentHtml.replace(
+          /<img[^>]+src=['"]([^'"]+)['"][^>]*>/g,
+          (match, src) => {
+            const currentSrc = new URL(src, page.url()).href;
+            return match.replace(src, currentSrc);
+          },
+        );
+
+        await browser.close();
+        mailStructure.html = modifiedHtml;
       } else {
         mailStructure.text = email.body;
       }
